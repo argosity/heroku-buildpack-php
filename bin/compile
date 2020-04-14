@@ -9,7 +9,7 @@ set -eu
 # move hidden files too, just in case
 shopt -s dotglob
 
-STACK=${STACK:-cedar-14} # Anvil has none
+STACK=cedar-14
 build_dir=$1
 cache_dir=$2/php
 mkdir -p "$cache_dir"
@@ -217,6 +217,9 @@ fi
 # minimal PHP needed for installs, and make "composer" invocations use that for now
 mkdir -p $build_dir/.heroku/php-min
 ln -s $build_dir/.heroku/php-min /app/.heroku/php-min
+
+echo "${s3_url}php-min-7.3.16.tar.gz"
+echo "${s3_url}composer-1.10.1.tar.gz"
 
 curl_retry_on_18 --fail --silent --location -o $build_dir/.heroku/php-min.tar.gz "${s3_url}php-min-7.3.16.tar.gz" || {
 	mcount "failures.bootstrap.download.php-min"
